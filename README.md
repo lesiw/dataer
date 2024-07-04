@@ -11,10 +11,9 @@ type Dataer interface {
 }
 ```
 
-## Example
-
+## Example: Struct
 ``` go
-//go:generate go run lesiw.io/dataer@latest -t superstring -d StringData
+//go:generate go run lesiw.io/dataer@latest -t superstring -d stringdata
 
 package main
 
@@ -22,7 +21,7 @@ import "fmt"
     
 type superstring string
 
-type StringData struct {
+type stringdata struct {
     String string
     Int int
 }
@@ -39,5 +38,27 @@ func main() {
     fmt.Println("y str:", y.Data().String)
     fmt.Println("x int:", x.Data().Int)
     fmt.Println("y int:", y.Data().Int)
+}
+```
+
+## Example: Basic type
+``` go
+//go:generate go run lesiw.io/dataer@latest -t superstring -d int
+
+package main
+
+import "fmt"
+
+type superstring string
+
+func main() {
+	x := superstring("a string")
+	y := superstring("a string")
+	*x.Data() = 42
+	*y.Data() = -1
+	fmt.Println(x)
+	fmt.Println("x == y?", x == y)
+	fmt.Println("x int:", *x.Data())
+	fmt.Println("y int:", *y.Data())
 }
 ```

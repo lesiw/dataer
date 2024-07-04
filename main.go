@@ -32,7 +32,7 @@ var _%[2]s = make(map[uintptr]*%[3]s)
 func (t *%[2]s) Data() *%[3]s {
 	ptr := uintptr(unsafe.Pointer(t))
 	if _, ok := _%[2]s[ptr]; !ok {
-		_%[2]s[ptr] = &%[3]s{}
+		_%[2]s[ptr] = new(%[3]s)
 		runtime.SetFinalizer(t, func(_ *%[2]s) { delete(_%[2]s, ptr) })
 	}
 	return _%[2]s[ptr]
