@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
+	"unicode"
 
 	"golang.org/x/tools/go/packages"
 	"lesiw.io/flag"
@@ -60,10 +62,25 @@ func run() error {
 	if len(pkgs) > 0 {
 		pkg = pkgs[0].Name
 	}
-	err = os.WriteFile(*ttype+".go",
+	err = os.WriteFile(filename(*ttype)+".go",
 		[]byte(fmt.Sprintf(code, pkg, *ttype, *dtype)), 0644)
 	if err != nil {
 		return fmt.Errorf("failed to generate %s: %w", *ttype+".go", err)
 	}
 	return nil
+}
+
+func filename(s string) string {
+	var result strings.Builder
+	for i, r := range s {
+		if unicode.IsUpper(r) {
+			if i > 0 {
+				result.WriteByte('_')
+			}
+			result.WriteRune(unicode.ToLower(r))
+		} else {
+			result.WriteRune(r)
+		}
+	}
+	return result.String()
 }
