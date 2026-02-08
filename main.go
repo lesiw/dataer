@@ -9,6 +9,7 @@ import (
 	"unicode"
 
 	"golang.org/x/tools/go/packages"
+
 	"lesiw.io/flag"
 )
 
@@ -63,7 +64,7 @@ func run() error {
 		pkg = pkgs[0].Name
 	}
 	err = os.WriteFile(filename(*ttype)+".go",
-		[]byte(fmt.Sprintf(code, pkg, *ttype, *dtype)), 0644)
+		fmt.Appendf(nil, code, pkg, *ttype, *dtype), 0644)
 	if err != nil {
 		return fmt.Errorf("failed to generate %s: %w", *ttype+".go", err)
 	}
